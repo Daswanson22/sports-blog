@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 // Define your routes here
-router.get('/', (req, res) => {
-  // fetch user info
-  res.render('account', { title: 'Express App' });
+router.get('/account', (req, res) => {
+  // fetch user info and pass to page
+  res.render('account', { title: 'Account' });
 });
 
 router.get('/compose', (req, res) => {
