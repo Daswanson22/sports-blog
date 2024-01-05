@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const crypto = require('crypto');
 // var passportLocalMongoose = require('passport-local-mongoose'); 
 const Schema = mongoose.Schema;
+const SALT_WORK_FACTOR = 15;
 
 const UserSchema = new Schema({
   first_name: { 
@@ -26,9 +27,25 @@ const UserSchema = new Schema({
   }, 
   hashed_password: {
     type: String,
-    required: true
+    required: true,
+  },
+  salt: {
+    type: String
   }
 });
+
+UserSchema.methods.setPassword = function(password) 
+{
+  this.salt = crypto.randomBytes(16).toString('hex');
+  this.hashed_password = crypto.pbkdf2Sync(password, this.salt, 1000, 64, `sha256`).toString('hex');
+}
+
+UserSchema.methods.validPassword = function (password) {
+  var hash = crypto.pbkdf2Sync(password,
+      this.salt, 1000, 64, `sha512`).toString(`hex`);
+  return this.hash === hash;
+};
+
 
 // UserSchema.plugin(passportLocalMongoose);
 

@@ -3,6 +3,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var crypto = require('crypto');
 var User = require('../models/user');
+var AuthController = require("../controllers/authController");
 const router = express.Router();
 
 router.get('/login', (req, res, next) => {
@@ -47,24 +48,7 @@ router.get('/signup', (req, res) => {
     res.render('signup');
 });
 
-router.post('/signup/newUser', async function insert(req, res) {
-  const user = new User({
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email,
-    username: req.body.username,
-    hashed_password: crypto.createHash('md5').update(req.body.password).digest('hex')
-  })
-
-  try {
-    const newUser = await user.save()
-                          .then(user => console.log('User created:', user))
-                          .catch(err => console.error(err));;
-    res.status(201).json(newUser);
-    console.log("User Created");
-  } catch (err) {
-    res.status(400).json(err.message);
-  }
-});
+// POST new user in the database.
+router.post('/signup/newUser', AuthController.insertUser);
 
 module.exports = router;
