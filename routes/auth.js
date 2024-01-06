@@ -42,13 +42,13 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
 router.post('/login/password', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login'
-  }));
+}));
 
 router.get('/signup', (req, res) => {
     res.render('signup');
 });
 
 // POST new user in the database.
-router.post('/signup/newUser', AuthController.insertUser);
+router.post('/signup/newUser', AuthController.createUser);
 
 module.exports = router;

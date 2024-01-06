@@ -1,13 +1,20 @@
 $(function() {
+    // Add section
     $("#add").on("click", function() {
         console.log("Add Section");
         addSection();
     });
 
+    // Delete section
     $(document).on("click", ".sub", function() {
         console.log("Subtract Section");
         deleteSection(this);
     });
+
+    // Submit Section
+    $("form").on("submit", function() {
+        console.log("New Post!");
+    })
 });
 
 function addSection() 

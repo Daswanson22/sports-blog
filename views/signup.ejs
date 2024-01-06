@@ -4,7 +4,6 @@
     <title>Home</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel="stylesheet" href="/stylesheets/signup.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <%- include('partials/navbar.ejs') %>
@@ -32,10 +31,7 @@
             </section>
             <button type="submit">Sign in</button>
         </form>
-        <div id="error"></div>
+        <div id="error"><%= message %></div>
     </div>
-
-    <script type="text/javascript" src="/javascripts/signup.js"></script>
-
   </body>
 </html>

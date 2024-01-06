@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const client = require('../public/javascripts/signup.js');
 
-exports.insertUser = async function (req, res) {
+exports.createUser = async function (req, res) {
     var error = false;
 
     const user = new User({
@@ -13,30 +13,26 @@ exports.insertUser = async function (req, res) {
 
     user.setPassword(req.body.password);
 
-    // Case: Email already exists in db.
-    if (User.find({email: user.email})) 
-    {
-        client.invalid("email");
-        error = true;
-    }
-    // Case: Username already exists in db.
-    if(User.find({username: user.username}))
-    {
-        client.invalid('username');
-        error = true;
-    }
-    // Confirm that information is no reused.
-    if (!error)
-    {
-        try {
-      
-            const newUser = await user.save()
-                                  .then(user => console.log('User created:', user))
-                                  .catch(err => console.error(err));;
-            res.status(201).redirect('http://localhost:3000/');
-            console.log("User Created");
-          } catch (err) {
-            res.status(400).json(err.message);
+    try {
+        const existingUserByEmail = await User.findOne({email: user.email});
+        const existingUserByUsername = await User.findOne({username: user.username});
+
+        if (existingUserByEmail) 
+        {
+            //client.invalid("email");
+            res.status(200).render('signup', {message: "That email already exists."});
         }
+        else if(existingUserByUsername)
+        {
+            res.status(200).render('signup', {message: "That username already exists."});
+        }
+        else
+        {
+            const newUSer = await user.save();
+            res.status(201).redirect('http://localhost:3000/');
+            console.log('User created: ', newUser);
+        }
+    } catch(err) {
+        res.status(500).json({error: err.message});
     }
 }
