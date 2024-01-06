@@ -7,3 +7,10 @@ nav {
     justify-content: space-between;
     align-items: center;
 }
+
+a {
+    border: 2px solid rgb(31, 86, 182);
+    border-radius: 25px;
+    background-color: rgba(40, 112, 235, 0.365);
+    padding: 3px;
+}

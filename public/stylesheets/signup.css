@@ -1,3 +1,10 @@
+
+body {
+    font-size: 14px;
+    
+}
+
 .invalid {
     border: 2px solid red;
 }
+
