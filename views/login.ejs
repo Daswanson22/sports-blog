@@ -9,6 +9,11 @@
 
     <div id="container">
         <h1>Sign in</h1>
+        <div id="error">
+          <% if (locals.message) { %>
+            <%= locals.message %>
+          <% } %>
+        </div>
         <form action="/login/password" method="post">
             <section>
                 <label for="username">Username</label>

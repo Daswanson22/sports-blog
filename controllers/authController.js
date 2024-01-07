@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const client = require('../public/javascripts/signup.js');
 
 exports.createUser = async function (req, res) {
     var error = false;
@@ -9,9 +8,13 @@ exports.createUser = async function (req, res) {
       last_name: req.body.last_name,
       email: req.body.email,
       username: req.body.username,
+      hashed_password: null,
+      salt: null
     });
 
     user.setPassword(req.body.password);
+    console.log(user.salt);
+    console.log(user.hash_password);
 
     try {
         const existingUserByEmail = await User.findOne({email: user.email});
@@ -19,7 +22,6 @@ exports.createUser = async function (req, res) {
 
         if (existingUserByEmail) 
         {
-            //client.invalid("email");
             res.status(200).render('signup', {message: "That email already exists."});
         }
         else if(existingUserByUsername)

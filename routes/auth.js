@@ -38,12 +38,13 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
     }
   }));
   
-
+// Verifies that username match with password.
 router.post('/login/password', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login'
 }));
 
+// Display sign up page
 router.get('/signup', (req, res) => {
     res.render('signup');
 });

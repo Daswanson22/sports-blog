@@ -31,7 +31,11 @@
             </section>
             <button type="submit">Sign in</button>
         </form>
-        <div id="error"><%= message %></div>
+        <div id="error">
+          <% if (locals.message) { %>
+            <%= locals.message %>
+          <% } %>
+        </div>
     </div>
   </body>
 </html>
