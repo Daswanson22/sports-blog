@@ -1,40 +1,46 @@
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-exports.createUser = async function (req, res) {
-    var error = false;
-
-    const user = new User({
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      email: req.body.email,
-      username: req.body.username,
-      hashed_password: null,
-      salt: null
-    });
-
-    user.setPassword(req.body.password);
-    console.log(user.salt);
-    console.log(user.hash_password);
+const register = async (req, res, next) => {
+    const {username, email, password } = req.body;
 
     try {
-        const existingUserByEmail = await User.findOne({email: user.email});
-        const existingUserByUsername = await User.findOne({username: user.username});
-
-        if (existingUserByEmail) 
-        {
-            res.status(200).render('signup', {message: "That email already exists."});
-        }
-        else if(existingUserByUsername)
-        {
-            res.status(200).render('signup', {message: "That username already exists."});
-        }
-        else
-        {
-            const newUSer = await user.save();
-            res.status(201).redirect('http://localhost:3000/');
-            console.log('User created: ', newUser);
-        }
-    } catch(err) {
-        res.status(500).json({error: err.message});
+        // Hash password, create new user, save user to DB.
+        const user = new User({username, email, password});
+        await user.save();
+        // Send a confirmation page or redirect to home page.
+        res.json({message: 'Registration Successful'});
+    } catch (err) {
+        next(err);
     }
 }
+
+const login = async (req, res, next) => {
+    const {username, password } = req.body;
+    
+    try {
+        const user = await User.findOne({username});
+
+        if(!user)
+        {
+            res.status(404).json({message: 'User not found'});
+        }
+        console.log("User password /login = " + password);
+        const passwordMatch = await user.comparePassword(password);
+        if(!passwordMatch)
+        {
+            res.status(401).json({message: 'Incorrect password'});
+        }
+
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+            expiresIn: '1 hour'
+        });
+        // Send token to middleware.
+        res.json({token});
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = {register, login };
