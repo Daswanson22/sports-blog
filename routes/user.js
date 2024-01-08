@@ -7,10 +7,10 @@ router.use((req, res, next) => {
   next()
 });
 
-// Get all articles for user here.
+// User access's their account.
 router.get('/account', authenticate, (req, res) => {
-  res.json({ message: `Welcome ${req.user.username}` });
-  //res.status(200).render('account');
+  var data = req.body; // User information to be displayed;
+  res.status(200).render('account', data);
 });
 
 router.get('/compose', (req, res) => {

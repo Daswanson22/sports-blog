@@ -4,8 +4,8 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
-const mongoose = require('mongoose');
 const ConnectDB = require('./db');
+const session = require('express-session');
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
@@ -20,12 +20,34 @@ ConnectDB();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// middleware setup
+// Session setup
+var sess = {
+  name: "user",
+  genid: null,
+  secret: process.env.SESSION_TOKEN,
+  resave: true,
+  saveUnitialized: true,
+  cookie: { 
+    expires: new Date(Date.now() + 3600000), // Current time + 1 hour
+  }
+}
+
+if(app.get('env') === 'production')
+{
+  console.log("Using Production");
+  app.set('trust proxy', 1);
+  sess.cookie.secure = true;
+}else{
+  console.log("Using development");
+}
+
+// Middleware setup
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session(sess));
 
 // routes
 app.use('/', indexRouter);
@@ -49,9 +71,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-// Session 
-
 
 const port = process.env.PORT || 3000;
 

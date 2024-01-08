@@ -41,7 +41,6 @@ UserSchema.pre('save', async function(next) {
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
     
-    console.log("User password /model = " + user.password);
     next();
   } catch (err) {
     return next(err);
@@ -50,8 +49,6 @@ UserSchema.pre('save', async function(next) {
 
 UserSchema.methods.comparePassword = async function (password)
 {
-  // Compare encrypted passwords
-  console.log("Encrypted compare = " + password + " == " + this.password);
   return bcrypt.compare(password, this.password);
 };
 

@@ -10,7 +10,7 @@ const register = async (req, res, next) => {
         const user = new User({username, email, password});
         await user.save();
         // Send a confirmation page or redirect to home page.
-        res.json({message: 'Registration Successful'});
+        res.redirect('/auth/login');
     } catch (err) {
         next(err);
     }
@@ -26,18 +26,31 @@ const login = async (req, res, next) => {
         {
             res.status(404).json({message: 'User not found'});
         }
-        console.log("User password /login = " + password);
+
         const passwordMatch = await user.comparePassword(password);
         if(!passwordMatch)
         {
             res.status(401).json({message: 'Incorrect password'});
         }
 
+        // Set session token with user id and secret key.
         const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
             expiresIn: '1 hour'
         });
-        // Send token to middleware.
-        res.json({token});
+        console.log("Authenticated");
+        // Generate new session for security.
+        
+
+            req.session.user = user;
+            req.session.genid = token;
+
+            req.session.save(function(err) {
+                if(err)
+                {
+                    next(err);
+                }
+            })
+            res.redirect('/user/account');
     } catch (err) {
         next(err);
     }
