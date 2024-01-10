@@ -17,7 +17,7 @@ const register = async (req, res, next) => {
 }
 
 const login = async (req, res, next) => {
-    const {username, password } = req.body;
+    const { username, password } = req.body;
     
     try {
         const user = await User.findOne({username});
@@ -37,11 +37,12 @@ const login = async (req, res, next) => {
         const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
             expiresIn: '1 hour'
         });
+        
         console.log("Authenticated");
         // Generate new session for security.
         
 
-            req.session.user = user;
+            req.session.authorized = true;
             req.session.genid = token;
 
             req.session.save(function(err) {
@@ -50,7 +51,7 @@ const login = async (req, res, next) => {
                     next(err);
                 }
             })
-            res.redirect('/user/account');
+            res.redirect('/');
     } catch (err) {
         next(err);
     }

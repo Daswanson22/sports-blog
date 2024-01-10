@@ -9,9 +9,13 @@
         </div>
         <div class="nav-links">
           <a href="/">Home</a>
-          <a href="/auth/signup">Become a Writer</a>
-          <a href="/auth/login">Sign In</a>
-          <a href="/user" hidden>My Account</a>
+          <%  if(locals.authorized) { %>
+            <a href="/user/account" >My Account</a>
+            <a href="/auth/logout" >Logout</a>
+          <% } else { %>
+            <a href="/auth/signup">Become a Writer</a>
+            <a href="/auth/login">Sign In</a>
+          <% } %>
           <a href="/about">About</a>
           <a href="/contact">Contact</a>
         </div>

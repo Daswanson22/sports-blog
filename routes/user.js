@@ -8,13 +8,15 @@ router.use((req, res, next) => {
 });
 
 // User access's their account.
-router.get('/account', authenticate, (req, res) => {
+router.get('/account', (req, res) => {
   var data = req.body; // User information to be displayed;
-  res.status(200).render('account', data);
+  var authorized = req.session.authorized;
+  res.status(200).render('account', { authorized });
 });
 
 router.get('/compose', (req, res) => {
-    res.render('compose', {title: "Compose"});
+    var authorized = req.session.authorized;
+    res.render('compose', {title: "Compose", authorized });
 });
 
 router.post('/compose', (req, res) => {
@@ -28,7 +30,5 @@ router.post('/compose', (req, res) => {
 // Edit a user
 
 // Update a user
-
-// router.get('/')
 
 module.exports = router;

@@ -16,7 +16,7 @@ const authenticate = async (req, res, next) => {
             return res.status(404).json({ message: 'User not found' });
         }
         // Check if session has stored a user.
-        if(req.session.user)
+        if(req.session.authorized)
         {
             next();
         } else {

@@ -9,6 +9,7 @@ router.use((req, res, next) => {
 
 // Define your routes here
 router.get('/', (req, res) => {
+  res.locals.authorized = req.session.authorized;
   res.render('index', { title: 'Sports Blog' });
 });
 
@@ -22,6 +23,6 @@ router.get('/all', async function(req, res) {
   }
 });
 
-router.get('/')
+
 
 module.exports = router;

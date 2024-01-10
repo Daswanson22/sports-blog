@@ -6,6 +6,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const ConnectDB = require('./db');
 const session = require('express-session');
+const { authenticate } = require('./middlewares/auth');
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
@@ -27,6 +28,7 @@ var sess = {
   secret: process.env.SESSION_TOKEN,
   resave: true,
   saveUnitialized: true,
+  authorized: false,
   cookie: { 
     expires: new Date(Date.now() + 3600000), // Current time + 1 hour
   }
@@ -51,7 +53,7 @@ app.use(session(sess));
 
 // routes
 app.use('/', indexRouter);
-app.use('/user', userRouter);
+app.use('/user', authenticate, userRouter);
 app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
