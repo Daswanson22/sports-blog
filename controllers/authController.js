@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res, next) => {
@@ -7,7 +6,7 @@ const register = async (req, res, next) => {
 
     try {
         // Hash password, create new user, save user to DB.
-        const user = new User({username, email, password});
+        const user = new User({username, email, password, about: ""});
         await user.save();
         // Send a confirmation page or redirect to home page.
         res.redirect('/auth/login');
@@ -37,21 +36,20 @@ const login = async (req, res, next) => {
         const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
             expiresIn: '1 hour'
         });
-        
+
         console.log("Authenticated");
-        // Generate new session for security.
-        
 
-            req.session.authorized = true;
-            req.session.genid = token;
+        req.session.authorized = true;
+        req.session.username = username;
+        req.session.genid = token;
 
-            req.session.save(function(err) {
-                if(err)
-                {
-                    next(err);
-                }
-            })
-            res.redirect('/');
+        req.session.save(function(err) {
+            if(err)
+            {
+                next(err);
+            }
+        })
+        res.redirect('/');
     } catch (err) {
         next(err);
     }

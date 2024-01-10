@@ -1,5 +1,5 @@
 const express = require('express');
-const { authenticate } = require('../middlewares/auth');
+const { accountInfo } = require('../controllers/userController');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -8,11 +8,7 @@ router.use((req, res, next) => {
 });
 
 // User access's their account.
-router.get('/account', (req, res) => {
-  var data = req.body; // User information to be displayed;
-  var authorized = req.session.authorized;
-  res.status(200).render('account', { authorized });
-});
+router.get('/account', accountInfo);
 
 router.get('/compose', (req, res) => {
     var authorized = req.session.authorized;
@@ -28,6 +24,9 @@ router.post('/compose', (req, res) => {
 // Delete a user
 
 // Edit a user
+router.get('/edit', (req, res) => {
+  res.render('edit');
+});
 
 // Update a user
 
