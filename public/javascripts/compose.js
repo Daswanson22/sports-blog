@@ -39,7 +39,7 @@ function addLink()
 
     var button = $('<button/>').attr({
         type: "button",
-        id: "subLink"
+        class: "subLink"
     }).text('- Sub Link');
 
     section.append(input, button);
