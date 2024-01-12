@@ -1,24 +1,34 @@
 const mongoose = require('mongoose')
 
 const articleSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true
+    title: {
+      type: String,
+      required: true
+    },
+    meta_summary: {
+      type: String,
+      required: true,
+      maxLength: 160
+    },
+    content: {
+      type: String,
+      required: true
+    },
+    links: {
+      type: String
+    },
+    username: {
+      type: String,
+      required: true,
+      set: toLower
+    }
   },
-  content: {
-    type: String,
-    required: true
-  },
-  postDate: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
-  pid: {
-    type: Number,
-    required: true,
-    default: 1 // This will be a function retrieving the id from the from.
-  }
-})
+  {timestamps: true}
+)
+
+function toLower(string)
+{
+  return string.toLowerCase();
+}
 
 module.exports = mongoose.model('articles', articleSchema)

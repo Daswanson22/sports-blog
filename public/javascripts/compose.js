@@ -5,10 +5,20 @@ $(function() {
         addSection();
     });
 
+    $("#addLink").on("click", function() {
+        console.log("Add Link");
+        addLink();
+    });
+
     // Delete section
     $(document).on("click", ".sub", function() {
         console.log("Subtract Section");
         deleteSection(this);
+    });
+
+    $(document).on("click", ".subLink", function() {
+        console.log("Subtract Link");
+        deleteLink(this);
     });
 
     // Submit Section
@@ -17,9 +27,35 @@ $(function() {
     })
 });
 
+function addLink()
+{
+    var section = $('<div>').addClass('linkContainer');
+
+    var input = $('<input/>').attr({
+        type: "text", 
+        name: "link",
+        id: "article_link"
+    });
+
+    var button = $('<button/>').attr({
+        type: "button",
+        id: "subLink"
+    }).text('- Sub Link');
+
+    section.append(input, button);
+
+    section.insertBefore("#addLink");
+}
+
+function deleteLink(clickedButton)
+{
+   // Find the container and remove it
+   $(clickedButton).closest('.linkContainer').remove();
+}
+
 function addSection() 
 {
-    var section = $('<div class="section-container"></div>');
+    var section = $('<div>').addClass("contentContainer");
     var input1 = $('<input/>').attr({
         type: "text",
         name: `title`,
@@ -54,5 +90,5 @@ function addSection()
 
 function deleteSection(clickedButton)
 {
-    $(clickedButton).closest(".section-container").remove();
+    $(clickedButton).closest(".contentContainer").remove();
 }
