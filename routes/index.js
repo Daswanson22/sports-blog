@@ -11,9 +11,11 @@ router.use((req, res, next) => {
 // Define your routes here
 router.get('/', async (req, res) => {
   res.locals.authorized = req.session.authorized;
-  if(process.env.DEBUG) console.log(UserController.fetchRecentPosts())
+
+  var recentPosts = await UserController.fetchRecentPosts()
+  if(process.env.DEBUG) console.log(recentPosts)
   
-  res.render('index', {articles: UserController.fetchRecentPosts()});
+  res.render('index', {articles: recentPosts});
 });
 
 // Debug Only

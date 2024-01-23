@@ -22,7 +22,13 @@
         </div>
         <h2>Publications</h2>
         <div id="allPublications">
-
+          <% articles.forEach(article => { %>
+            <div id="article_box">
+              <h2><%= article.title %></h2>
+              <h3><%= article.updatedAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></h3>
+              <p><%= article.meta_summary %></p>
+            </div>
+          <% }) %>
         </div>
     </div>
   </body>

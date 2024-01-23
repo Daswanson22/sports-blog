@@ -24,7 +24,9 @@ const createArticle = async (req, res) => {
 
         // Save article to DB.
         await article.save()
-        res.status(201).render("index", {articles: fetchRecentPosts()})
+
+        var recentPosts = await fetchRecentPosts()
+        res.status(201).render("index", {articles: recentPosts})
     } catch (error) {
         if(process.env.DEBUG) console.log(error)
         res.status(500).render('error', {error})
@@ -46,10 +48,29 @@ const accountInfo = async (req, res, next) => {
         console.log(info);
         // Display account with user info.
         var authorized = req.session.authorized;
-        res.status(200).render('account', { authorized, data: info});
+        var recentPosts = await fetchPostsByUsername(req.session.username)
+        console.log("Authorized : " + authorized)
+        console.log("Info: " + info)
+        console.log(recentPosts)
+        res.status(200).render('account', { authorized, data: info, articles: recentPosts});
     } catch(error) {
         if(process.env.DEBUG) console.log(error)
         res.status(400).json({message: error.message});
+    }
+}
+
+// Cannot fetch by username
+const fetchPostsByUsername = async function(un)
+{
+    console.log("USERNAME = " + un)
+    try {
+        var user_posts = await Article.find({
+            username: un
+        })
+        if(process.env.DEBUG) console.log(user_posts)
+        return user_posts
+    } catch (err) {
+        return err
     }
 }
 
@@ -67,5 +88,6 @@ module.exports = {
     accountInfo, 
     createArticle, 
     displayAccount,
-    fetchRecentPosts
+    fetchRecentPosts,
+    fetchPostsByUsername
 };
