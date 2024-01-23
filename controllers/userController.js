@@ -24,10 +24,16 @@ const createArticle = async (req, res) => {
 
         // Save article to DB.
         await article.save()
-        res.status(201).render("index")
+        res.status(201).render("index", {articles: fetchRecentPosts()})
     } catch (error) {
+        if(process.env.DEBUG) console.log(error)
         res.status(500).render('error', {error})
     }
+}
+
+const displayAccount = async (req, res) => {
+    var authorized = req.session.authorized;
+    res.render('compose', {title: "Compose", authorized });
 }
 
 const accountInfo = async (req, res, next) => {
@@ -42,8 +48,24 @@ const accountInfo = async (req, res, next) => {
         var authorized = req.session.authorized;
         res.status(200).render('account', { authorized, data: info});
     } catch(error) {
-        return res.status(400).json({message: error.message});
+        if(process.env.DEBUG) console.log(error)
+        res.status(400).json({message: error.message});
     }
 }
 
-module.exports = {accountInfo, createArticle};
+async function fetchRecentPosts() {
+    try {
+        var recentPosts = await Article.find()
+        return recentPosts
+    } catch (error) {
+        if(process.env.DEBUG) console.log(error)
+        return error 
+    }
+}
+
+module.exports = {
+    accountInfo, 
+    createArticle, 
+    displayAccount,
+    fetchRecentPosts
+};

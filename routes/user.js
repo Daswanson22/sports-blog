@@ -1,5 +1,5 @@
 const express = require('express');
-const { accountInfo, createArticle } = require('../controllers/userController');
+const { accountInfo, createArticle, displayAccount } = require('../controllers/userController');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -10,10 +10,7 @@ router.use((req, res, next) => {
 // User access's their account.
 router.get('/account', accountInfo);
 
-router.get('/compose', (req, res) => {
-    var authorized = req.session.authorized;
-    res.render('compose', {title: "Compose", authorized });
-});
+router.get('/compose', displayAccount)
 
 router.post('/compose', createArticle);
 
