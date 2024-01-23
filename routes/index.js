@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const Article = require('../models/article')
 
 router.use((req, res, next) => {
   console.log('Time: ' + new Date().getTime())
@@ -8,9 +9,11 @@ router.use((req, res, next) => {
 });
 
 // Define your routes here
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   res.locals.authorized = req.session.authorized;
-  res.render('index', { title: 'Sports Blog' });
+  var listArticles = await Article.find()
+  console.log(listArticles)
+  res.render('index', {articles: listArticles});
 });
 
 // Debug Only

@@ -1,5 +1,5 @@
 const express = require('express');
-const { accountInfo } = require('../controllers/userController');
+const { accountInfo, createArticle } = require('../controllers/userController');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -15,11 +15,7 @@ router.get('/compose', (req, res) => {
     res.render('compose', {title: "Compose", authorized });
 });
 
-router.post('/compose', (req, res) => {
-    res.send(req.body);
-    // Post info in database.
-    // Display on recent uploads
-});
+router.post('/compose', createArticle);
 
 // Delete a user
 
