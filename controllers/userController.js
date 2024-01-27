@@ -76,7 +76,7 @@ const fetchPostsByUsername = async function(un)
 
 async function fetchRecentPosts() {
     try {
-        var recentPosts = await Article.find()
+        var recentPosts = await Article.find().sort({"updatedAt": -1}).limit(5)
         return recentPosts
     } catch (error) {
         if(process.env.DEBUG) console.log(error)
