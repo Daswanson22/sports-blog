@@ -24,7 +24,7 @@ const postNewEmail = async function(req, res) {
             from: req.body.email,
             to: `${email}`,
             subject: req.body.subject,
-            text: `This message is from ${req.body.email}: \n${req.body.message}`
+            text: `This message is from ${req.body.email} \n${req.body.message}`
         }
 
         var transport = transporter(email, password)
@@ -40,7 +40,7 @@ const postNewEmail = async function(req, res) {
 
         var recentPosts = await fetchRecentPosts()
 
-        res.status(200).render('index', {articles: recentPosts})
+        res.status(200).render('success')
     } catch(error) {
         res.status(500).render("error", {error})
     }
