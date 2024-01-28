@@ -1,6 +1,6 @@
 const User = require('../models/user')
 const Article = require('../models/article')
-
+const API_Controller = require("./apiController")
 const edit = async (req, res, next) => {
 
     try {
@@ -25,7 +25,7 @@ const createArticle = async (req, res) => {
         // Save article to DB.
         await article.save()
 
-        var recentPosts = await fetchRecentPosts()
+        var recentPosts = await API_Controller.fetchRecentPosts()
         res.status(201).render("index", {articles: recentPosts})
     } catch (error) {
         if(process.env.DEBUG) console.log(error)
@@ -74,20 +74,9 @@ const fetchPostsByUsername = async function(un)
     }
 }
 
-async function fetchRecentPosts() {
-    try {
-        var recentPosts = await Article.find().sort({"updatedAt": -1}).limit(5)
-        return recentPosts
-    } catch (error) {
-        if(process.env.DEBUG) console.log(error)
-        return error 
-    }
-}
-
 module.exports = {
     accountInfo, 
     createArticle, 
     displayAccount,
-    fetchRecentPosts,
     fetchPostsByUsername
 };

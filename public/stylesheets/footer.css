@@ -1,0 +1,16 @@
+
+.footer-container {
+    border-top: 2px solid black;
+    margin-top: 2ch;
+}
+
+.foot-links a{
+    color: rgb(109, 109, 109);
+
+    text-decoration: none;
+}
+
+.foot-links a:hover {
+    text-decoration: underline;
+    color: rgb(53, 52, 52);
+}

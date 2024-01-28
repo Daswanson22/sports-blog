@@ -11,6 +11,7 @@ const { authenticate } = require('./middlewares/auth');
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
+const apiRouter = require('./routes/api');
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use(session(sess));
 app.use('/', indexRouter);
 app.use('/user', authenticate, userRouter);
 app.use('/auth', authRouter);
+app.use('/api', apiRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

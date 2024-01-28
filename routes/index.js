@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
-const UserController = require('../controllers/userController')
+const API_Controller = require('../controllers/apiController')
 
 router.use((req, res, next) => {
   console.log('Time: ' + new Date().getTime())
@@ -12,11 +12,16 @@ router.use((req, res, next) => {
 router.get('/', async (req, res) => {
   res.locals.authorized = req.session.authorized;
 
-  var recentPosts = await UserController.fetchRecentPosts()
-  if(process.env.DEBUG) console.log(recentPosts)
+  var recentPosts = await API_Controller.fetchRecentPosts()
+  var debug = process.env.DEBUG
+  //if(debug) { console.log("POST HEREs" + recentPosts) }
   
   res.render('index', {articles: recentPosts});
 });
+
+router.get('/contact', (req, res) => {
+  res.status(200).render("contact")
+})
 
 // Debug Only
 router.get('/all', async function(req, res) {
