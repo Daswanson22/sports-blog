@@ -23,6 +23,8 @@ router.get('/contact', (req, res) => {
   res.status(200).render("contact")
 })
 
+router.get('/:id', API_Controller.getArticlePost)
+
 // Debug Only
 router.get('/all', async function(req, res) {
   try {

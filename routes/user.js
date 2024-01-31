@@ -21,6 +21,4 @@ router.get('/edit', (req, res) => {
   res.render('edit');
 });
 
-// Update a user
-
 module.exports = router;

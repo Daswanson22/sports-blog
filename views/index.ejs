@@ -3,8 +3,6 @@
   <head>
     <title>Home</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/javascripts/clickable.js"></script>
   </head>
   <body>
     <%- include('partials/navbar.ejs') %>
@@ -14,7 +12,7 @@
         <div id="recentPosts">
             <% articles.forEach(article => { %>
               <div id="article_box">
-                <h2><%= article.title %></h2>
+                <a href="/<%= article.title %>"><%= article.title %></a>
                 <h3><%= article.updatedAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></h3>
                 <p><%= article.meta_summary %></p>
               </div>
