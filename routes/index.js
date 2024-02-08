@@ -4,7 +4,7 @@ const User = require('../models/user');
 const API_Controller = require('../controllers/apiController')
 
 router.use((req, res, next) => {
-  console.log('Time: ' + new Date().getTime())
+  //console.log('Time: ' + new Date().getTime())
   next()
 });
 

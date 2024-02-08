@@ -5,7 +5,7 @@ const authenticate = async (req, res, next) => {
     const token = req.session.genid;
     console.log("Token = " + token);
     if (!token) {
-      return res.status(401).json({ message: 'Authentication required' });
+      return res.status(401).render("login");
     }
   
     try {

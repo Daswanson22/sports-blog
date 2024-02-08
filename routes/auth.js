@@ -20,6 +20,7 @@ router.post('/signup', register);
 
 router.get('/logout', (req, res) => {
     // Clear user session.
+    //console.log("Deleting session token: " + req.session.genid);
     req.session.destroy(err => {
         if (err) {
             console.error('Error destroying session:', err);

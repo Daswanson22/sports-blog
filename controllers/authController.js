@@ -2,9 +2,15 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res, next) => {
-    const {username, email, password } = req.body;
-
     try {
+        const {username, email, password } = req.body;
+        const existingUser = await User.findOne({email}) ? true : (await User.findOne({username}) ? true : false);
+        console.log(existingUser)
+        if(existingUser) {
+            throw ({message: `The username (${email}) or (${username}) already exists. Please try signing in.`, 
+                    status: 400,
+                    stack: "Unkown" })
+        }
         // Hash password, create new user, save user to DB.
         const user = new User({username, email, password, about: ""});
         await user.save();
@@ -37,11 +43,11 @@ const login = async (req, res, next) => {
             expiresIn: '1 hour'
         });
 
-        console.log("Authenticated");
-
         req.session.authorized = true;
         req.session.username = username;
         req.session.genid = token;
+
+        console.log("Authenticated");
 
         req.session.save(function(err) {
             if(err)
