@@ -14,10 +14,13 @@ async function fetchRecentPosts() {
 
 const getArticlePost = async function(req, res) {
     try {
+        // Passed to navbar to change links based on authorized status.
+        res.locals.authorized = req.session.authorized;
+
         var clickedTitle = req.params.id
         var details = await Article.find({title: clickedTitle}).limit(1)
 
-        if(details.length == 0) 
+        if(details.length == 0)
             throw ({message: `The article (${clickedTitle}) not found`, 
                     status: 404,
                     stack: "Unkown" })

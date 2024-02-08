@@ -20,6 +20,8 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/contact', (req, res) => {
+  res.locals.authorized = req.session.authorized;
+
   res.status(200).render("contact")
 })
 
