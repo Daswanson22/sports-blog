@@ -1,5 +1,6 @@
 const express = require('express');
-const { accountInfo, createArticle, displayAccount } = require('../controllers/userController');
+const { accountInfo, createArticle, displayAccount, fetchArticleToUpdate, updateArticle } = require('../controllers/userController');
+const article = require('../models/article');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -17,8 +18,8 @@ router.post('/compose', createArticle);
 // Delete a user
 
 // Edit a user
-router.get('/edit', (req, res) => {
-  res.render('edit');
-});
+router.get('/edit/:id', fetchArticleToUpdate);
+
+router.post('/edit/:id', updateArticle);
 
 module.exports = router;

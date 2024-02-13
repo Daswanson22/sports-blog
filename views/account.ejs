@@ -3,6 +3,7 @@
   <head>
     <title>Your Account</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/account.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="/javascripts/account.js"></script>
   </head>
@@ -24,7 +25,13 @@
         <div id="allPublications">
           <% articles.forEach(article => { %>
             <div id="article_box">
-              <a href="/<%= article.title %>"><%= article.title %></a>
+              <div id="title_container">
+                <a href="/<%= article.title %>"><%= article.title %></a>
+                <div id="title_actions">
+                  <a href="/user/edit/<%= article.title %>">Edit</a>
+                  <a href="/user/delete/<%= article.title %>">Delete</a>
+                </div>
+              </div>
               <h3><%= article.updatedAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></h3>
               <p><%= article.meta_summary %></p>
             </div>

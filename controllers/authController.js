@@ -47,7 +47,7 @@ const login = async (req, res, next) => {
         req.session.username = username;
         req.session.genid = token;
 
-        console.log("Authenticated");
+        //console.log("Authenticated");
 
         req.session.save(function(err) {
             if(err)

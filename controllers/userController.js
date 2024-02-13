@@ -1,14 +1,41 @@
 const User = require('../models/user')
 const Article = require('../models/article')
 const API_Controller = require("./apiController")
-const edit = async (req, res, next) => {
-
+const updateArticle = async (req, res) => {
+    const authorized = req.session.authorized
+    console.log(req.body)
     try {
+        // let doc = await Article.findOne({title: req.params.id})
+        
+        // doc.title = req.body.title
+        // doc.meta_summary = req.body.metaSummary
+        // doc.content = req.body.content
 
+        // await doc.save()
+        accountInfo()
     } catch(err) {
-
+        res.status(500).render('error', {error: err})
     }
 }
+
+const fetchArticleToUpdate = async (req, res) => { 
+    const authorized = req.session.authorized
+    try {
+        const request_title = req.params.id
+        const info = await Article.find({title: request_title}).limit(1)
+        console.log("info = " + info[0])
+        if(info == null) {
+        throw({message: "Could not find the post you want to edit.",
+                status: 400,
+                stack: "unkown"})
+        } else {
+        res.render('edit', {authorized, article: info[0]});
+        }
+    } catch (err) {
+        res.status(400).render('error', {error: err})
+    }
+}
+
 
 const createArticle = async (req, res) => {
     const {title, metaSummary, content, links } = req.body;
@@ -35,7 +62,7 @@ const createArticle = async (req, res) => {
 
 const displayAccount = async (req, res) => {
     var authorized = req.session.authorized;
-    res.render('compose', {title: "Compose", authorized });
+    res.render('compose', {authorized, articles:[] });
 }
 
 const accountInfo = async (req, res, next) => {
@@ -55,7 +82,7 @@ const accountInfo = async (req, res, next) => {
         res.status(200).render('account', { authorized, data: info, articles: recentPosts});
     } catch(error) {
         if(process.env.DEBUG) console.log(error)
-        res.status(400).json({message: error.message});
+        res.status(500).render('error', {error: {message: "Could not find user information", status: 500, stack: "Unkown"}});
     }
 }
 
@@ -78,5 +105,7 @@ module.exports = {
     accountInfo, 
     createArticle, 
     displayAccount,
-    fetchPostsByUsername
+    fetchPostsByUsername,
+    fetchArticleToUpdate,
+    updateArticle
 };

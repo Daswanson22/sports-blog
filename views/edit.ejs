@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Compose an Article</title>
+    <link rel='stylesheet' href='/stylesheets/compose.css' />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/javascripts/compose.js"></script>
+  </head>
+  <body>
+    <%- include('partials/navbar.ejs') %>
+
+    <div id="container">
+      <h1>Write an article</h1>
+      <form method="post" action="/user/edit/:id" id="compose_form">
+        <section>
+          <label for="article_title">Title</label>
+          <input type="text" name="title" id="article_title" value="<%= article.title %>">
+        </section>
+        <section>
+          <div id="meta_label_container">
+            <label for="article_meta_summary">Meta Summary</label>
+            <p>Max Characters 160</p>
+          </div>
+          <textarea name="metaSummary" id="article_meta_summary"><%= article.meta_summary %></textarea>
+        </section>
+        <section id="linkSection">
+          <label for="article_link">Links</label>
+          <button type="button" id="addLink">+ Add New Link</button>
+        </section>
+        <section>
+          <label for="article_content">Content</label>
+          <textarea name="content" id="article_content"><%= article.content %></textarea>
+          <button type="button" id="add">+ Add Section</button>
+        </section>
+        <button type="submit">Update Article</button>
+      </form>
+    </div>
+</body>
+
+
+</html>
