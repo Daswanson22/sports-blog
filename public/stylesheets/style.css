@@ -10,7 +10,27 @@ body {
 }
 
 #article_box {
-  border: 2px solid black;
-  padding: 0 3ch;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.229);
+  padding: 1ch 3ch;
+}
+
+#article_box:last-child {
+  border: none;
+}
+
+#article_box a{
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#date{
+  font-size: 14px;
+  color: rgb(100, 100, 100);
+}
+
+#summary {
+  
 }
 

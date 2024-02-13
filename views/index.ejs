@@ -13,8 +13,8 @@
             <% articles.forEach(article => { %>
               <div id="article_box">
                 <a href="/<%= article.title %>"><%= article.title %></a>
-                <h3><%= article.updatedAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></h3>
-                <p><%= article.meta_summary %></p>
+                <p id="date"><%= article.updatedAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></p>
+                <p id="summary"><%= article.meta_summary %></p>
               </div>
             <% }) %>
         </div>

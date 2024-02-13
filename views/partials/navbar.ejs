@@ -1,23 +1,18 @@
 <!-- views/navbar.ejs -->
-<nav>
-    <div class="navbar-container">
-        <div class="logo">
-          <!-- Add your logo here -->
-          <a href="/">
-            <img src="/path/to/your/logo.png" alt="Logo">
-          </a>
-        </div>
-        <div class="nav-links">
-          <a href="/">Home</a>
-          <a href="/user/compose">Write</a>
-          <%  if(locals.authorized) { %>
-            <a href="/user/account" >My Account</a>
-            <a href="/auth/logout" >Logout</a>
-          <% } else { %>
-            <a href="/auth/login">Sign In</a>
-          <% } %>
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
-        </div>
+<div class="navbar-container">
+    <div class="logo">
+      <!-- Add your logo here -->
+      <a href="/">
+        <img src="/path/to/your/logo.png" alt="Logo">
+      </a>
     </div>
-</nav>
+    <div class="nav-links">
+      <a href="/user/compose">Write</a>
+      <%  if(locals.authorized) { %>
+        <a href="/user/account" >My Account</a>
+        <a href="/auth/logout" >Logout</a>
+      <% } else { %>
+        <a href="/auth/login">Sign In</a>
+      <% } %>
+    </div>
+</div>

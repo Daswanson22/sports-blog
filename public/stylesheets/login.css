@@ -1,0 +1,53 @@
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 30%;
+}
+
+form section{
+    display: flex;
+    flex-direction: column;
+    margin: 1ch 0;
+}
+
+label {
+    font-size: 18px;
+}
+
+section a {
+    margin: 1ch auto;
+    text-decoration: none;
+    color: black;
+}
+
+section span {
+    color: rgb(8, 54, 118);
+}
+
+input {
+    font-size: 18px;
+    padding: 3px;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+button {
+    width: 60%;
+    margin: 0 auto;
+    padding: 4px;
+    border: none;
+    border-radius: 25px;
+    background-color: rgb(28, 28, 28);
+    color: white;
+    font-size: 16px;
+    font-weight: 100;
+    padding: 8px 0;
+    transition: 0.3s background-color ease;
+}
+
+button:hover {
+    background-color: black;
+    cursor: pointer;
+}
+

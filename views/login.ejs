@@ -3,6 +3,7 @@
   <head>
     <title>Home</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/login.css">
   </head>
   <body>
     <%- include('partials/navbar.ejs') %>
@@ -23,8 +24,10 @@
                 <label for="current-password">Password</label>
                 <input id="current-password" name="password" type="password" autocomplete="current-password" required>
             </section>
-            <a href="/auth/signup">Sign Up</a>
-            <button type="submit">Sign in</button>
+            <section>
+              <a href="/auth/signup">No account? <span>Create one</span></a>
+              <button type="submit">Sign in</button>
+            </section>
         </form>
     </div>
   </body>
