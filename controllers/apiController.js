@@ -16,7 +16,7 @@ const getArticlePost = async function(req, res) {
     try {
         // Passed to navbar to change links based on authorized status.
         res.locals.authorized = req.session.authorized;
-
+        req.session.title = req.params.id
         var clickedTitle = req.params.id
         var details = await Article.find({title: clickedTitle}).limit(1)
 

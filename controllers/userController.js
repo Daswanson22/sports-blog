@@ -1,18 +1,25 @@
 const User = require('../models/user')
 const Article = require('../models/article')
 const API_Controller = require("./apiController")
+
 const updateArticle = async (req, res) => {
     const authorized = req.session.authorized
-    console.log(req.body)
-    try {
-        // let doc = await Article.findOne({title: req.params.id})
-        
-        // doc.title = req.body.title
-        // doc.meta_summary = req.body.metaSummary
-        // doc.content = req.body.content
+    const oldTitle = req.session.title
 
-        // await doc.save()
-        accountInfo()
+    try {
+        const query_title = {title: oldTitle}
+        const updated_info = {
+                              title: req.body.title,
+                              meta_summary: req.body.metaSummary,
+                              content: req.body.content
+                            }
+
+        await Article.findOneAndUpdate(query_title, updated_info)
+
+        var info = await User.find({username: req.session.username}, 'username email about');
+        let accountPosts = await fetchPostsByUsername(req.session.username)
+
+        res.render('account', {authorized, data: info, articles: accountPosts})
     } catch(err) {
         res.status(500).render('error', {error: err})
     }
@@ -20,6 +27,8 @@ const updateArticle = async (req, res) => {
 
 const fetchArticleToUpdate = async (req, res) => { 
     const authorized = req.session.authorized
+    req.session.title = req.params.id
+
     try {
         const request_title = req.params.id
         const info = await Article.find({title: request_title}).limit(1)
@@ -72,17 +81,23 @@ const accountInfo = async (req, res, next) => {
         console.log("Session username = " + req.session.username);
         var info = await User.find({username: req.session.username}, 'username email about');
         
-        console.log(info);
         // Display account with user info.
         var authorized = req.session.authorized;
         var recentPosts = await fetchPostsByUsername(req.session.username)
+
         console.log("Authorized : " + authorized)
         console.log("Info: " + info)
         console.log(recentPosts)
+
+        if(authorized == false) {
+            throw({message: "You are not authorized to view this page.",        
+                    status: 401,
+                    stack: "unkown"})
+        }
         res.status(200).render('account', { authorized, data: info, articles: recentPosts});
-    } catch(error) {
-        if(process.env.DEBUG) console.log(error)
-        res.status(500).render('error', {error: {message: "Could not find user information", status: 500, stack: "Unkown"}});
+    } catch(err) {
+        if(process.env.DEBUG) console.log(err)
+        res.status(500).render('error', {error: err});
     }
 }
 
